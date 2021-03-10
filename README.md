@@ -1,4 +1,3 @@
-# Read Me
 M-Tokens Express provides an almost decentralized way for users to get M-Tokens and reverse operation. The users can get M-Tokens and redeem the native tokens seamlessly with their decentralized wallets. The whole process is very simple and just like normal transactions. 
 
 M-Tokens Express adapts smart contracts on Ethereum to make the transaction can be verified on chain. In the case of Sending BTC/Receiving MBTC, when M-Tokens Express transfers MBTC to users, it will call the smart contract to input the users’ account(wallet) address and the BTC deposit transaction ID. In the opposite case, when users transfer MBTC to M-Tokens Express, the relevant information is recorded on-chain simultaneously. 
@@ -7,8 +6,10 @@ M-Tokens Express adapts smart contracts on Ethereum to make the transaction can 
 **[xxxxxx](https://) 
 
 ## Smart contracts( to be added)
-**MTokenDeSwapFactory is [xxxxxx](https://) 
+**MTokenDeSwapFactory is [xxxxxx](https://)  
+
 **TransparentUpgradeableProxy is [xxxxxx](https://)  
+
 **MTokenDeSwap is [xxxxxx](https://)  
 
 The third-party audit report can be found [here](http://). （To be added)
