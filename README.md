@@ -21,7 +21,7 @@ The following workflow takes exchange between BTC and MBTC as an example to show
 ## Send BTC/Receive MBTC
 Users request the transaction with sent amount, received amount, ETH destination address. Requests must be signed with the users’ wallet. After that, the M-Tokens Express will generate an order and an unique BTC deposit address for the users. The BTC deposit address and users’ wallet are one-to-one correspondence. Then, the user deposits BTC to the address with the accurate amount, otherwise, the system can not match the order with the deposit transaction, the order will not be able to execute the subsequent process. 
 
-After the BTC transaction is confirmed on chain and gets the minimum number of confirmations. M-Tokens Express system will transfer the MBTC to the user’s ETH destination address by calling the `function swap` with the inputs of transaction details, such as the user's ETH address, BTC deposit transaction ID, the signature of order and so on. 
+After the BTC transaction is confirmed on chain and gets the minimum number of confirmations. M-Tokens Express system will transfer the MBTC to the user’s ETH destination address by calling the `*function swap*` with the inputs of transaction details, such as the user's ETH address, BTC deposit transaction ID, the signature of order and so on. 
 
 **Note:**
 * Any BTC deposit amount which is more than minimal deposit amount and not equal to the existing order, the system will create a new unsigned order. Users can get the corresponding amount of MBTC after signing with the wallet.
