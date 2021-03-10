@@ -24,9 +24,8 @@ Users request the transaction with sent amount, received amount, ETH destination
 After the BTC transaction is confirmed on chain and gets the minimum number of confirmations. M-Tokens Express system will transfer the MBTC to the user’s ETH destination address by calling the `function swap` with the inputs of transaction details, such as the user's ETH address, BTC deposit transaction ID, the signature of order and so on. 
 
 **Note:**
-*Any BTC deposit amount which is more than minimal deposit amount and not equal to the existing order, the system will create a new unsigned order. Users can get the corresponding amount of MBTC after signing with the wallet.*
-
-*Please deposit BTC within 24 HOURS after the order is created, otherwise the order will expire.*
+* Any BTC deposit amount which is more than minimal deposit amount and not equal to the existing order, the system will create a new unsigned order. Users can get the corresponding amount of MBTC after signing with the wallet.
+* Please deposit BTC within 24 HOURS after the order is created, otherwise the order will expire.
 
 ## Send MBTC/Receive BTC
 Users request the transaction with sent amount, received amount, BTC destination address. The users’ wallet will call the `function unWrap` to trigger the exchange. Before it, the users must first approve the M-Tokens Express to transfer the MBTC in the wallet, and confirm the transaction. 
