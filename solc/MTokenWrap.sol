@@ -125,6 +125,10 @@ contract MTokenWrap is Ownable, CanReclaimToken {
         uint256 rate,
         uint64 deadline //TODO  暂时设置为public
     ) public view returns (bytes memory) {
+        uint id;
+        assembly {
+            id := chainid()
+        }
         return
             abi.encodePacked(
                 "wrap ",
@@ -140,7 +144,9 @@ contract MTokenWrap is Ownable, CanReclaimToken {
                 "\ndeadline:",
                 uintToString(deadline),
                 "\naddr:",
-                nativeCoinAddress
+                nativeCoinAddress,
+                "\nchainid:",
+                uintToString(id)
             );
     }
 
@@ -194,6 +200,7 @@ contract MTokenWrap is Ownable, CanReclaimToken {
                 );
 
             address addr = recoverPersonalSignature(r, s, v, text);
+            require(addr != address(0), "0 address");
             require(addr == ethAccount, "invalid signature");
         }
         require(
