@@ -3,10 +3,10 @@ pragma solidity ^0.7.0;
 pragma experimental SMTChecker;
 import "./Claimable.sol";
 import "./CanReclaimToken.sol";
-import "./MTokenDeSwap.sol";
+import "./ccTokenDeSwap.sol";
 import "./TransparentUpgradeableProxy.sol";
 
-contract MTokenDeSwapFactory is Claimable, CanReclaimToken {
+contract ccTokenDeSwapFactory is Claimable, CanReclaimToken {
     mapping(bytes32 => address) public deSwaps;
 
     function getDeSwap(string memory _nativeCoinType)
@@ -20,25 +20,25 @@ contract MTokenDeSwapFactory is Claimable, CanReclaimToken {
     }
 
     function deployDeSwap(
-        address _mtoken,
+        address _cctoken,
         string memory _nativeCoinType,
-        address _mtokenRepository,
+        address _cctokenRepository,
         address _operator
     ) public onlyOwner returns (bool) {
         bytes32 nativeCoinTypeHash =
             keccak256(abi.encodePacked(_nativeCoinType));
         require(_operator!=_owner(), "owner same as _operator");
         require(deSwaps[nativeCoinTypeHash] == (address)(0), "deEx exists.");
-        MTokenDeSwap mtokenDeSwap = new MTokenDeSwap();
+        ccTokenDeSwap cctokenDeSwap = new ccTokenDeSwap();
         TransparentUpgradeableProxy proxy =
             new TransparentUpgradeableProxy(
-                (address)(mtokenDeSwap),
+                (address)(cctokenDeSwap),
                 (address)(this),
                 abi.encodeWithSignature(
                     "setup(address,string,address,address)",
-                    _mtoken,
+                        _cctoken,
                     _nativeCoinType,
-                    _mtokenRepository,
+                        _cctokenRepository,
                     _operator
                 )
             );

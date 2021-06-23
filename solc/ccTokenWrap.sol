@@ -6,11 +6,11 @@ import "./Ownable.sol";
 import "./CanReclaimToken.sol";
 import "./SafeMathLib.sol";
 
-contract MTokenWrap is Ownable, CanReclaimToken {
+contract ccTokenWrap is Ownable, CanReclaimToken {
     using SafeMath for uint256;
-    ERC20If public mtoken;
+    ERC20If public cctoken;
     string public nativeCoinType;
-    address public mtokenRepository;
+    address public cctokenRepository;
     uint256 public wrapSeq;
     mapping(bytes32 => uint256) public wrapSeqMap;
 
@@ -22,12 +22,12 @@ contract MTokenWrap is Ownable, CanReclaimToken {
     //     checkSignature = _b;
     // }
 
-    function _mtokenRepositorySet(address newMtokenRepository)
+    function _cctokenRepositorySet(address newRepository)
         public
         onlyOwner
     {
-        require(newMtokenRepository != (address)(0), "invalid addr");
-        mtokenRepository = newMtokenRepository;
+        require(newRepository != (address)(0), "invalid addr");
+        cctokenRepository = newRepository;
     }
 
     function wrapHash(string memory nativeCoinAddress, string memory nativeTxId)
@@ -39,15 +39,15 @@ contract MTokenWrap is Ownable, CanReclaimToken {
     }
 
     event SETUP(
-        address _mtoken,
+        address _cctoken,
         string _nativeCoinType,
-        address _mtokenRepository
+        address _cctokenRepository
     );
 
     function setup(
-        address _mtoken,
+        address _cctoken,
         string memory _nativeCoinType,
-        address _mtokenRepository,
+        address _cctokenRepository,
         address _initOwner
     )
         public
@@ -58,11 +58,11 @@ contract MTokenWrap is Ownable, CanReclaimToken {
     {
         if (wrapSeq <= 0) {
             wrapSeq = 1;
-            mtoken = (ERC20If)(_mtoken);
+            cctoken = (ERC20If)(_cctoken);
             nativeCoinType = _nativeCoinType;
-            mtokenRepository = _mtokenRepository;
+            cctokenRepository = _cctokenRepository;
             owner = _initOwner;
-            emit SETUP(_mtoken, _nativeCoinType, _mtokenRepository);
+            emit SETUP(_cctoken, _nativeCoinType, _cctokenRepository);
             emit OwnershipTransferred(_owner(), _initOwner);
             return true;
         }
@@ -109,7 +109,7 @@ contract MTokenWrap is Ownable, CanReclaimToken {
         return toHexString(abi.encodePacked(account));
     }
 
-    function calcMTokenAmount(
+    function calcCCTokenAmount(
         uint256 amt,
         uint256 fee,
         uint256 rate
@@ -118,7 +118,7 @@ contract MTokenWrap is Ownable, CanReclaimToken {
     }
 
     function encode(
-        address receiveMTokenAddress,
+        address receiveCCTokenAddress,
         string memory nativeCoinAddress,
         uint256 amt,
         uint256 fee,
@@ -134,7 +134,7 @@ contract MTokenWrap is Ownable, CanReclaimToken {
                 "wrap ",
                 nativeCoinType,
                 "\nto:",
-                toHexString(receiveMTokenAddress),
+                toHexString(receiveCCTokenAddress),
                 "\namt:",
                 uintToString(amt),
                 "\nfee:",
@@ -175,7 +175,7 @@ contract MTokenWrap is Ownable, CanReclaimToken {
 
     function wrap(
         address ethAccount,
-        address receiveMTokenAddress,
+        address receiveCCTokenAddress,
         string memory nativeCoinAddress,
         string memory nativeTxId,
         uint256 amt,
@@ -186,12 +186,12 @@ contract MTokenWrap is Ownable, CanReclaimToken {
         bytes32 s,
         uint8 v
     ) public onlyOwner returns (bool) {
-        uint256 mtokenAmount = calcMTokenAmount(amt, fee, rate);
+        uint256 cctokenAmount = calcCCTokenAmount(amt, fee, rate);
         // if (checkSignature) 
         {
             bytes memory text =
                 encode(
-                    receiveMTokenAddress,
+                    receiveCCTokenAddress,
                     nativeCoinAddress,
                     amt,
                     fee,
@@ -211,17 +211,17 @@ contract MTokenWrap is Ownable, CanReclaimToken {
         wrapSeq = wrapSeq + 1;
 
         require(
-            mtoken.transferFrom(
-                mtokenRepository,
-                receiveMTokenAddress,
-                mtokenAmount
+            cctoken.transferFrom(
+                cctokenRepository,
+                receiveCCTokenAddress,
+                cctokenAmount
             ),
             "transferFrom failed"
         );
         emit WRAP_EVENT(
             wrapSeq,
             ethAccount,
-            receiveMTokenAddress,
+            receiveCCTokenAddress,
             nativeCoinAddress,
             nativeTxId,
             amt,fee,rate,
@@ -237,7 +237,7 @@ contract MTokenWrap is Ownable, CanReclaimToken {
     event WRAP_EVENT(
         uint256 indexed wrapSeq,
         address ethAccount,
-        address receiveMTokenAddress,
+        address receiveCCTokenAddress,
         string nativeCoinAddress,
         string nativeTxId,
         uint256 amt,

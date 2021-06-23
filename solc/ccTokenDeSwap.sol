@@ -1,9 +1,9 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.7.0;
 // pragma experimental SMTChecker;
-import "./MTokenWrap.sol";
+import "./ccTokenWrap.sol";
 
-contract MTokenDeSwap is MTokenWrap {
+contract ccTokenDeSwap is ccTokenWrap {
     using SafeMath for uint256;
 
     //PENDING=》CANCELED
@@ -33,7 +33,7 @@ contract MTokenDeSwap is MTokenWrap {
     struct UnWrapOrder {
         address ethAccount;
         uint256 nativeCoinAmount;
-        uint256 mtokenAmount;
+        uint256 cctokenAmount;
         string nativeCoinAddress;
         string nativeTxId;
         uint256 requestBlockNo;
@@ -65,7 +65,7 @@ contract MTokenDeSwap is MTokenWrap {
         returns (
             address ethAccount,
             uint256 nativeCoinAmount,
-            uint256 mtokenAmount,
+            uint256 cctokenAmount,
             string memory nativeCoinAddress,
             string memory nativeTxId,
             uint256 requestBlockNo,
@@ -77,7 +77,7 @@ contract MTokenDeSwap is MTokenWrap {
         UnWrapOrder memory order = unWrapOrders[seq];
         ethAccount = order.ethAccount;
         nativeCoinAmount = order.nativeCoinAmount;
-        mtokenAmount = order.mtokenAmount;
+        cctokenAmount = order.cctokenAmount;
         nativeCoinAddress = order.nativeCoinAddress;
         nativeTxId = order.nativeTxId;
         requestBlockNo = order.requestBlockNo;
@@ -100,10 +100,10 @@ contract MTokenDeSwap is MTokenWrap {
         string memory nativeCoinAddress
     ) public notPaused returns (bool) {
         address ethAccount = msg.sender;
-        uint256 mtokenAmount = amt;
+        uint256 cctokenAmount = amt;
         uint256 nativeCoinAmount = calcUnWrapAmount(amt, fee, rate);
         require(
-            mtoken.transferFrom(ethAccount, mtokenRepository, mtokenAmount),
+            cctoken.transferFrom(ethAccount, cctokenRepository, cctokenAmount),
             "transferFrom failed"
         );
         uint256 seq = unWrapOrders.length;
@@ -111,7 +111,7 @@ contract MTokenDeSwap is MTokenWrap {
             UnWrapOrder({
                 ethAccount: ethAccount,
                 nativeCoinAmount: nativeCoinAmount,
-                mtokenAmount: mtokenAmount,
+                cctokenAmount: cctokenAmount,
                 nativeCoinAddress: nativeCoinAddress,
                 requestBlockNo: block.number,
                 status: OrderStatus.PENDING,
@@ -141,14 +141,14 @@ contract MTokenDeSwap is MTokenWrap {
         uint256 seq,
         address ethAccount,
         uint256 nativeCoinAmount,
-        uint256 mtokenAmount,
+        uint256 cctokenAmount,
         string memory nativeCoinAddress
     ) public onlyOwner returns (bool) {
         require(unWrapOrders.length > seq, "invalid seq");
         UnWrapOrder memory order = unWrapOrders[seq];
         require(order.status == OrderStatus.PENDING, "status not pending");
         require(ethAccount == order.ethAccount, "invalid param1");
-        require(mtokenAmount == order.mtokenAmount, "invalid param2");
+        require(cctokenAmount == order.cctokenAmount, "invalid param2");
         require(nativeCoinAmount == order.nativeCoinAmount, "invalid param3");
         require(
             stringEquals(nativeCoinAddress, order.nativeCoinAddress),
@@ -170,10 +170,10 @@ contract MTokenDeSwap is MTokenWrap {
         unWrapOrders[seq].status = OrderStatus.CANCELED;
 
         require(
-            mtoken.transferFrom(
-                mtokenRepository,
+            cctoken.transferFrom(
+                cctokenRepository,
                 order.ethAccount,
-                order.mtokenAmount
+                order.cctokenAmount
             ),
             "transferFrom failed"
         );
