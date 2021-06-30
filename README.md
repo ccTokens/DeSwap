@@ -5,7 +5,7 @@ The third-party audit report of smart contracts can be found [here](http://). �
 
 The following workflow takes exchange between BTC and MBTC as an example to show the process, while other swap pairs' workflow remains consistent. ccTokens Express requires the users to connect the wallet first to start the transaction.
 
-## Wrap-send BTC/Receive MBTC
+## Wrap-send BTC/Receive ccBTC
 Users request the transaction with the sent amount, received amount, ETH destination address. Requests must be signed with the users’ wallet. After that, the ccTokens Express will generate an order and a unique BTC deposit address for the users. The BTC deposit address and users’ wallets are one-to-one correspondence. Then, the user deposits BTC to the address with the accurate amount, otherwise, the system can not match the order with the deposit transaction, the order will not be able to execute the subsequent process. 
 
 Once the BTC transaction has been sufficiently confirmed by the Bitcoin chain. ccTokens Express will transfer the ccBTC to the user’s ETH destination address by calling the `function Wrap` with the inputs of transaction details, such as the user's ETH address, BTC deposit transaction ID, the signature of order, and so on. 
