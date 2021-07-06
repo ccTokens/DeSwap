@@ -123,7 +123,7 @@ contract ccTokenWrap is Ownable, CanReclaimToken {
         uint256 amt,
         uint256 fee,
         uint256 rate,
-        uint64 deadline //TODO  暂时设置为public
+        uint64 deadline
     ) public view returns (bytes memory) {
         uint id;
         assembly {
