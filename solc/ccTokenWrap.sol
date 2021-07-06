@@ -52,7 +52,6 @@ contract ccTokenWrap is Ownable, CanReclaimToken {
     )
         public
         returns (
-            //onlyOwner   一次setup，不鉴权了
             bool
         )
     {
