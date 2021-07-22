@@ -1,7 +1,7 @@
 # Cross-Chain Tokens Express Guidelines
 Cross-Chain Tokens(ccTokens) Express provides an almost decentralized way and adapts smart contracts on Ethereum for users to get ccTokens and reverse operation. The users can get ccTokens and redeem the native tokens seamlessly with their decentralized wallets, transactions can be verified on chain. The whole process is very simple and likes normal transactions. 
 
-The third-party audit report of smart contracts can be found [here](http://). （To be added)
+The third-party audit report of smart contracts can be found [here](https://www.crosschain.network/PeckShield-Audit-Report-DeSwap-v1.0.pdf). 
 
 The following workflow takes exchange between BTC and ccBTC as an example to show the process, while other swap pairs' workflow remains consistent. ccTokens Express requires the users to connect the wallet first to start the transaction.
 
